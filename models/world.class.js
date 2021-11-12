@@ -1,6 +1,7 @@
 class World {
     ctx;
     canvas;
+    keyboard;
     character = new Character();
     enemies = [
         new Chicken,
@@ -17,10 +18,17 @@ class World {
         new BackgroundObject('img/5.Fondo/Capas/1.suelo-fondo1/1.png', 0)
         
     ];
-    constructor(canvas){
+    constructor(canvas, keyboard){
         this.ctx = canvas.getContext('2d');
         this.canvas = canvas;
+        this.keyboard = keyboard;
         this.draw();
+        this.setWorld();
+
+    }
+
+    setWorld(){
+        this.character.world = this;
 
     }
 
@@ -51,7 +59,23 @@ class World {
     }
 
 
-    addToMap(movableObject){
-        this.ctx.drawImage(movableObject.img, movableObject.x, movableObject.y, movableObject.width, movableObject.height);
+    addToMap(mo){
+        //console.log( typeof movableObject);
+        //console.log(movableObject.otherDirection);
+        if(mo.otherDirection){
+            console.log("gespiegelt wird ausgeführt");
+            this.ctx.save();
+            this.ctx.translate(mo.width, 0);
+            this.ctx.scale(-1, 1);
+            mo.x = mo.x;
+        }
+
+        this.ctx.drawImage(mo.img, mo.x, mo.y, mo.width, mo.height);
+        if(mo.otherDirection){
+            console.log("nicht gespiegelt wird ausgeführt");
+            mo.x = mo.x * -1;
+            this.ctx.restore();
+            
+        }
     }
 }
