@@ -3,21 +3,8 @@ class World {
     canvas;
     keyboard;
     character = new Character();
-    enemies = [
-        new Chicken,
-        new Chicken,
-        new Chicken,
-    ]
-    clouds = [
-        new Cloud()
-    ];
-    backgroundObjects = [
-        new BackgroundObject('img/5.Fondo/Capas/5.cielo_1920-1080px.png', 0),
-        new BackgroundObject('img/5.Fondo/Capas/3.Fondo3/1.png', 0),
-        new BackgroundObject('img/5.Fondo/Capas/2.Fondo2/1.png', 0),
-        new BackgroundObject('img/5.Fondo/Capas/1.suelo-fondo1/1.png', 0)
-        
-    ];
+    camera_x = 0;
+    level = level1;
     constructor(canvas, keyboard){
         this.ctx = canvas.getContext('2d');
         this.canvas = canvas;
@@ -36,12 +23,16 @@ class World {
     draw() {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
+        this.ctx.translate(this.camera_x, 0);
+
         
-        this.addObjectsToMap(this.character);
-        this.addObjectsToMap(this.backgroundObjects);
-        this.addObjectsToMap(this.clouds);
-        this.addObjectsToMap(this.enemies);
-        this.ctx.drawImage(this.character.img, this.character.x, this.character.y, this.character.height, this.character.width);
+        
+        this.addObjectsToMap(this.level.backgroundObjects);
+        this.addToMap(this.character);
+        this.addObjectsToMap(this.level.clouds);
+        this.addObjectsToMap(this.level.enemies);
+        //this.ctx.drawImage(this.character.img, this.character.x, this.character.y, this.character.height, this.character.width);
+        this.ctx.translate(-this.camera_x, 0);
         
 
         //draw wird immer wieder aufgerufen..
@@ -67,15 +58,17 @@ class World {
             this.ctx.save();
             this.ctx.translate(mo.width, 0);
             this.ctx.scale(-1, 1);
-            mo.x = mo.x;
+            mo.x = mo.x * -1;
         }
 
         this.ctx.drawImage(mo.img, mo.x, mo.y, mo.width, mo.height);
+        
         if(mo.otherDirection){
             console.log("nicht gespiegelt wird ausgeführt");
             mo.x = mo.x * -1;
             this.ctx.restore();
             
         }
+        
     }
 }

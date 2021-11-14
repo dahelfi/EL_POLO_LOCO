@@ -1,6 +1,6 @@
 class Character extends MovableObject{
 
-    y = 170;
+    y = 210;
     speed = 10;
     width = 280;
     height = 230;
@@ -13,6 +13,7 @@ class Character extends MovableObject{
         'img/2.Secuencias_Personaje-Pepe-corrección/2.Secuencia_caminata/W-26.png'
     ];
     world;
+    walking_sound = new Audio('audio/155589_2802105-lq.mp3');
     
     
 
@@ -26,35 +27,32 @@ class Character extends MovableObject{
     animate(){
 
         setInterval(() =>{
+            this.walking_sound.pause();
 
-            if(this.world.keyboard.RIGHT){
-                console.log("rechts gedrückt");
+            if(this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x){
+                
                 this.x += this.speed;
                 this.otherDirection = false;
-                console.log(this.otherDirection);
+                this.walking_sound.play();
+                
             }
 
-            if(this.world.keyboard.LEFT){
-                console.log("links gedrückt");
+            if(this.world.keyboard.LEFT && this.x > 50){
+                
                 this.x -= this.speed;
                 this.otherDirection = true;
-                console.log(this.otherDirection);
+                this.walking_sound.play();
             }
 
-
+            this.world.camera_x = -this.x + 50;
         },1000/60);
 
 
         setInterval(() =>{
 
             if(this.world.keyboard.RIGHT  || this.world.keyboard.LEFT){
-                this.x += this.speed;
-
                 //Walk animation
-                let i = this.currentImage % this.IMAGES_WALKING.length;
-                let path = this.IMAGES_WALKING[i];
-                this.img = this.imageCache[path];
-                this.currentImage++;
+                this.playAnimation(this.IMAGES_WALKING);
 
             }
            
