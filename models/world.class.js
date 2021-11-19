@@ -2,10 +2,14 @@ class World {
     ctx;
     canvas;
     keyboard;
+    //coins = [new Coins(), new Coins()];
+    //bottles = [new Bottle(), new Bottle()];
     character = new Character();
     camera_x = 0;
     level = level1;
-    statusBar = new StatusBar();
+    statusBarBottels = new StatusBarBottels();
+    statusBarCoins = new StatusBarCoins();
+    statusBarLives = new StatusBarLives();
     throwableObjects = [];
     constructor(canvas, keyboard){
         this.ctx = canvas.getContext('2d');
@@ -28,12 +32,14 @@ class World {
 
         this.ctx.translate(this.camera_x, 0);
 
-        
-        
         this.addObjectsToMap(this.level.backgroundObjects);
         this.addToMap(this.character);
         this.ctx.translate(-this.camera_x, 0);
-        this.addToMap(this.statusBar);
+        this.addObjectsToMap(this.level.bottles);
+        this.addObjectsToMap(this.level.coins);
+        this.addToMap(this.statusBarBottels);
+        this.addToMap(this.statusBarCoins);
+        this.addToMap(this.statusBarLives);
         this.addObjectsToMap(this.throwableObjects);
         this.ctx.translate(this.camera_x, 0);
         this.addObjectsToMap(this.level.clouds);
@@ -67,10 +73,8 @@ class World {
 
         mo.draw(this.ctx);
         mo.drawFrame(this.ctx);
-
- 
         
-        if(mo.otherDirection){
+         if(mo.otherDirection){
             this.flipImageBack(mo);
         }
         
@@ -104,7 +108,7 @@ class World {
             if(this.character.isColliding(enemy)){
                 console.log('Collision with Charakter', this.character.energy);
                 this.character.hit();
-                this.statusBar.setPercentage(this.character.energy);
+                this.statusBarLives.setPercentage(this.character.energy);
             }
         });
 
