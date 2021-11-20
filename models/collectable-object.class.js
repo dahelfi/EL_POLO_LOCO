@@ -14,6 +14,8 @@ class CollectableObject extends DrawableObject{
     donothing(){
         
     }
+    
+
 
 
 

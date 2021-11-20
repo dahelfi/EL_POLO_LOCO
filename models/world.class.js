@@ -2,6 +2,7 @@ class World {
     ctx;
     canvas;
     keyboard;
+    coinsCounter = 0;
     //coins = [new Coins(), new Coins()];
     //bottles = [new Bottle(), new Bottle()];
     character = new Character();
@@ -10,6 +11,7 @@ class World {
     statusBarBottels = new StatusBarBottels();
     statusBarCoins = new StatusBarCoins();
     statusBarLives = new StatusBarLives();
+    bottleCounter = [];
     throwableObjects = [];
     constructor(canvas, keyboard){
         this.ctx = canvas.getContext('2d');
@@ -35,15 +37,18 @@ class World {
         this.addObjectsToMap(this.level.backgroundObjects);
         this.addToMap(this.character);
         this.ctx.translate(-this.camera_x, 0);
-        this.addObjectsToMap(this.level.bottles);
-        this.addObjectsToMap(this.level.coins);
+
         this.addToMap(this.statusBarBottels);
         this.addToMap(this.statusBarCoins);
         this.addToMap(this.statusBarLives);
+
         this.addObjectsToMap(this.throwableObjects);
         this.ctx.translate(this.camera_x, 0);
         this.addObjectsToMap(this.level.clouds);
         this.addObjectsToMap(this.level.enemies);
+        this.addObjectsToMap(this.level.bottles);
+        this.addObjectsToMap(this.level.coins);
+    
         //this.ctx.drawImage(this.character.img, this.character.x, this.character.y, this.character.height, this.character.width);
         this.ctx.translate(-this.camera_x, 0);
         
@@ -59,23 +64,24 @@ class World {
     addObjectsToMap(objects){
         objects.forEach(o =>{
             this.addToMap(o);
+          
         })
     }
 
 
-    addToMap(mo){
+    addToMap(drawableObject){
         //console.log( typeof movableObject);
         //console.log(movableObject.otherDirection);
-        if(mo.otherDirection){
-            this.flipImage(mo);
+        if(drawableObject.otherDirection){
+            this.flipImage(drawableObject);
 
         }
-
-        mo.draw(this.ctx);
-        mo.drawFrame(this.ctx);
         
-         if(mo.otherDirection){
-            this.flipImageBack(mo);
+        drawableObject.draw(this.ctx);
+        drawableObject.drawFrame(this.ctx);
+        
+         if(drawableObject.otherDirection){
+            this.flipImageBack(drawableObject);
         }
         
     }
@@ -96,28 +102,53 @@ class World {
 
     run(){
         setInterval(() => {
-            this.checkCollisions();
+            this.checkCollisionsWithEnemies();
             this.checkThrowableObjects();
+            this.checkCollisionsWithCoins();
+            //this.checkCollisionsWithBottles();
 
         }, 200 );
     }
 
-    checkCollisions(){
+    checkCollisionsWithEnemies(){
 
         this.level.enemies.forEach((enemy) =>{
             if(this.character.isColliding(enemy)){
-                console.log('Collision with Charakter', this.character.energy);
                 this.character.hit();
                 this.statusBarLives.setPercentage(this.character.energy);
             }
         });
+    }
 
+    checkCollisionsWithCoins(){
+        this.level.coins.forEach((coins) =>{
+           if(this.character.isColliding(coins) && !coins.wasTouched){
+            coins.wasTouched = true;
+            this.coinsCounter += 20;
+            this.statusBarCoins.setPercentage(this.coinsCounter);
+            console.log(this.coinsCounter);
+            
+
+           }
+        })
+    }
+
+
+    checkCollisionsWithBottles(){
+        this.level.bottles.forEach((bottles) =>{
+            if(this.character.isColliding(bottles)){
+                let bottle = new ThrowableObject(this.character.x + 100, this.character.y + 100);
+                this.throwableObjects.push(bottle);
+                this.statusBarBottels.setPercentage(this.throwableObjects.length);
+                console.log(this.throwableObjects);
+             }
+        })
     }
 
     checkThrowableObjects(){
-        if(this.keyboard.SPACE){
-            let bottle = new ThrowableObject(this.character.x + 100, this.character.y + 100);
-            this.throwableObjects.push(bottle);
+        if(this.keyboard.SPACE && this.throwableObjects.length > 0){
+            console.log("ich werde ausgeführt");
+            this.throwableObjects.slice(this.throwableObjects.length-1, this.throwableObjects.length);
         }
     }
 

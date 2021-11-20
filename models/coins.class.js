@@ -1,8 +1,9 @@
-class Coins extends CollectableObject{
+class Coin extends CollectableObject{
+
+    schonBerührt = false;
 
     constructor(){
         super().loadImage('img/8.Coin/Moneda1.png');
-
         this.x = 200 + Math.random() * 1500;
         this.y = 270;
         this.width = 150;
