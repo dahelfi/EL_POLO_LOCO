@@ -1,6 +1,6 @@
 class Coin extends CollectableObject{
 
-    schonBerührt = false;
+    wasTouched;
 
     constructor(){
         super().loadImage('img/8.Coin/Moneda1.png');
@@ -8,6 +8,7 @@ class Coin extends CollectableObject{
         this.y = 270;
         this.width = 150;
         this.height = 150;
+        this.wasTouched = false;
 
     }
 

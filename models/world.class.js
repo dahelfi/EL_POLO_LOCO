@@ -76,9 +76,13 @@ class World {
             this.flipImage(drawableObject);
 
         }
+        if (!((drawableObject instanceof Bottle || drawableObject instanceof Coin) && drawableObject.wasTouched)) {
+            drawableObject.draw(this.ctx);
+            //drawableObject.drawFrame(this.ctx);
+            
+        }
         
-        drawableObject.draw(this.ctx);
-        drawableObject.drawFrame(this.ctx);
+
         
          if(drawableObject.otherDirection){
             this.flipImageBack(drawableObject);
@@ -102,12 +106,12 @@ class World {
 
     run(){
         setInterval(() => {
-            this.checkCollisionsWithEnemies();
-            this.checkThrowableObjects();
+            this.checkCollisionsWithEnemies();  
             this.checkCollisionsWithCoins();
-            //this.checkCollisionsWithBottles();
+            this.checkCollisionsWithBottles();
+            this.checkThrowableObjects();
 
-        }, 200 );
+        }, 200);
     }
 
     checkCollisionsWithEnemies(){
@@ -122,13 +126,10 @@ class World {
 
     checkCollisionsWithCoins(){
         this.level.coins.forEach((coins) =>{
-           if(this.character.isColliding(coins) && !coins.wasTouched){
+           if(this.character.isColliding(coins) && !coins.wasTouched){  
             coins.wasTouched = true;
             this.coinsCounter += 20;
             this.statusBarCoins.setPercentage(this.coinsCounter);
-            console.log(this.coinsCounter);
-            
-
            }
         })
     }
@@ -136,19 +137,26 @@ class World {
 
     checkCollisionsWithBottles(){
         this.level.bottles.forEach((bottles) =>{
-            if(this.character.isColliding(bottles)){
-                let bottle = new ThrowableObject(this.character.x + 100, this.character.y + 100);
-                this.throwableObjects.push(bottle);
-                this.statusBarBottels.setPercentage(this.throwableObjects.length);
-                console.log(this.throwableObjects);
+            if(this.character.isColliding(bottles) && !bottles.wasTouched){
+                bottles.wasTouched = true;
+                for (let i = 0; i < 20; i++) {
+                    let variable = true;
+                    this.bottleCounter.push(variable);
+                    
+                }
+                this.statusBarBottels.setPercentage(this.bottleCounter.length);
+                
              }
         })
     }
 
     checkThrowableObjects(){
-        if(this.keyboard.SPACE && this.throwableObjects.length > 0){
-            console.log("ich werde ausgeführt");
-            this.throwableObjects.slice(this.throwableObjects.length-1, this.throwableObjects.length);
+        if(this.keyboard.SPACE && this.bottleCounter.length > 0){
+            let bottle = new ThrowableObject(this.character.x + 100, this.character.y + 100);
+            this.throwableObjects.push(bottle);
+            this.bottleCounter = this.bottleCounter.slice(5, this.bottleCounter.length);
+            this.statusBarBottels.setPercentage(this.bottleCounter.length);
+            console.log(this.bottleCounter);
         }
     }
 
