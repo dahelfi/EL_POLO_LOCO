@@ -1,4 +1,5 @@
 class ThrowableObject extends MovableObject{
+    alreadyHit;
 
     constructor(x, y){
         super().loadImage('img/7.Marcadores/Icono/Botella.png');
@@ -7,7 +8,8 @@ class ThrowableObject extends MovableObject{
  
         this.height = 60;
         this.width = 50;
-        this.throw();
+        this.alreadyHit = false;
+        this.throw(x, y);
 
 
     }
@@ -15,6 +17,8 @@ class ThrowableObject extends MovableObject{
 
     throw(x, y){
 
+        
+ 
         this.speedY = 30;
         this.applyGravity();
 
@@ -24,4 +28,4 @@ class ThrowableObject extends MovableObject{
 
 
     }
-}
+} 

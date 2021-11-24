@@ -3,7 +3,8 @@ class Endboss extends MovableObject{
     height = 400;
     width = 250;
     y = 60;
-
+    hitPower = 25;
+    energy = 100;
 
 
     IMAGES_WALKING = [
@@ -22,9 +23,33 @@ class Endboss extends MovableObject{
         this.loadImages(this.IMAGES_WALKING);
 
         this.x = 2200;
+        this.live();
+
+
+    }
+
+    live(){
         this.animate();
+        //this.moveRandom();
 
+    }
 
+    moveRandom(){
+        this.speed = this.createRandomSpeed();
+        if(this.createRandomDirection % 2 == 0){
+            this.moveRight();
+        }else{
+            this.moveLeft();
+        }
+
+    }
+
+    createRandomSpeed(){
+        return 0.15 + Math.random() * 0.3;
+    }
+
+    createRandomDirection(){
+        return Math.random() * 10;
     }
 
     animate(){
@@ -35,5 +60,7 @@ class Endboss extends MovableObject{
             }, 200);
 
     }
+
+
 
 }

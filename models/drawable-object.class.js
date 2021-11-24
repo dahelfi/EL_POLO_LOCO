@@ -43,11 +43,11 @@ class DrawableObject{
 
     }
 
-    isColliding(mo){
-        return this.x + this.width > mo.x && 
-        this.y + this.height > mo.y &&
-        this.x < mo.x && 
-        this.y < mo.y + mo.height;
+    isColliding(drawableObject){
+        return this.x + this.width > drawableObject.x && 
+        this.y + this.height > drawableObject.y &&
+        this.x < drawableObject.x && 
+        this.y < drawableObject.y + drawableObject.height;
     }
 
     

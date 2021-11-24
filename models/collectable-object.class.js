@@ -7,13 +7,11 @@ class CollectableObject extends DrawableObject{
 
     constructor(){
         super();
-        this.donothing();
+       
     }
 
 
-    donothing(){
-        
-    }
+ 
     
 
 

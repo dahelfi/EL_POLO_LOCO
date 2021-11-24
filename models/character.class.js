@@ -4,6 +4,8 @@ class Character extends MovableObject{
     speed = 10;
     width = 280;
     height = 250;
+    
+   
 
     IMAGES_WALKING = [
         'img/2.Secuencias_Personaje-Pepe-corrección/2.Secuencia_caminata/W-21.png',
@@ -47,7 +49,7 @@ class Character extends MovableObject{
     ]
 
     world;
-    walking_sound = new Audio('audio/155589_2802105-lq.mp3');
+    walking_sound = new Audio('audio/runSound.mp3');
     
     
 

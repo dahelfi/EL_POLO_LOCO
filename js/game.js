@@ -4,21 +4,20 @@ let keyboard = new Keyboard();
 
 
 
+
 function init(){
+    document.getElementById('startScreenDiv').classList.add('d-none');
+    console.log("ich werde ausgeführt");
     canvas = document.getElementById('canvas');
     world = new World(canvas, keyboard);
 
     
 
 
-    //character.src = '../img/2.Secuencias_Personaje-Pepe-corrección/2.Secuencia_caminata/W-21.png';
-    //ctx.drawImage(character, 20, 20, 50, 150);
-    console.log("Mein Charakter ist", world.character);
-   
-    
-
-
 }
+
+
+
 
 
 window.addEventListener("keydown", (e) =>{
@@ -61,3 +60,4 @@ window.addEventListener("keyup", (e) =>{
         keyboard.SPACE = false;
     }
 });
+
